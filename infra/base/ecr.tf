@@ -1,16 +1,22 @@
 resource "aws_ecr_repository" "quotes" {
   name         = "${var.prefix}-quotes"
-  force_delete = true
+  #force_delete = true # when ecr still container images, it may still be deleted, it is high risk for data loss
+# --- UPDATED CODE START ---
+  # Set to false to prevent accidental, forced deletion of all images.
+  force_delete = false
+# --- UPDATED CODE END ---
 }
 
 resource "aws_ecr_repository" "newsfeed" {
   name         = "${var.prefix}-newsfeed"
-  force_delete = true
+  #force_delete = true # reason as above
+  force_delete = false
 }
 
 resource "aws_ecr_repository" "front_end" {
   name         = "${var.prefix}-front_end"
-  force_delete = true
+  #force_delete = true # reason as above
+  force_delete = false
 }
 
 data "aws_caller_identity" "current" {}
