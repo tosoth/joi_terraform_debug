@@ -1,16 +1,27 @@
 data "aws_ssm_parameter" "vpc_id" {
   name = "/${var.prefix}/base/vpc_id"
 }
-data "aws_ssm_parameter" "subnet" {
+#data "aws_ssm_parameter" "subnet" {
+#  name = "/${var.prefix}/base/subnet/a/id" # This is bad, only subnet a is used for ssm
+#}
+
+data "aws_ssm_parameter" "subnet_a" {
   name = "/${var.prefix}/base/subnet/a/id"
 }
+
+data "aws_ssm_parameter" "subnet_b" {
+  name = "/${var.prefix}/base/subnet/b/id"
+}
+
+
 data "aws_ssm_parameter" "ecr" {
   name = "/${var.prefix}/base/ecr"
 }
 
 locals {
   vpc_id = data.aws_ssm_parameter.vpc_id.value
-  subnet_id = data.aws_ssm_parameter.subnet.value
+  #subnet_id = data.aws_ssm_parameter.subnet.value
+  subnet_ids = [data.aws_ssm_parameter.subnet_a.value, data.aws_ssm_parameter.subnet_b.value]
   ecr_url = data.aws_ssm_parameter.ecr.value
 }
 
@@ -23,7 +34,7 @@ resource "aws_security_group" "ssh_access" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] # too wide, replace with specific ip, or use ssm session manager instead, and move to priv subnet
   }
 
   tags = {
@@ -210,7 +221,7 @@ resource "null_resource" "quotes_provision" {
     source = "${path.module}/provision-quotes.sh"
     destination = "/home/ec2-user/provision.sh"
   }
-  provisioner "remote-exec" {
+  provisioner "remote-exec" { # remote-exec highly rely on network, use ec2 user data instead
     inline = [
       "chmod +x /home/ec2-user/provision.sh",
       "/home/ec2-user/provision.sh ${local.ecr_url}quotes:latest"
@@ -300,7 +311,7 @@ resource "null_resource" "newsfeed_provision" {
     source = "${path.module}/provision-newsfeed.sh"
     destination = "/home/ec2-user/provision.sh"
   }
-  provisioner "remote-exec" {
+  provisioner "remote-exec" {# remote-exec highly rely on network, use ec2 user data instead
     inline = [
       "chmod +x /home/ec2-user/provision.sh",
       "/home/ec2-user/provision.sh ${local.ecr_url}newsfeed:latest"
@@ -319,14 +330,14 @@ resource "null_resource" "front_end_provision" {
     source = "${path.module}/provision-front_end.sh"
     destination = "/home/ec2-user/provision.sh"
   }
-  provisioner "remote-exec" {
+  provisioner "remote-exec" {# remote-exec highly rely on network, use ec2 user data instead
     inline = [
       "chmod +x /home/ec2-user/provision.sh",
 <<EOF
       /home/ec2-user/provision.sh \
       --region ${var.region} \
       --docker-image ${local.ecr_url}front_end:latest \
-      --quote-service-url http://${aws_instance.quotes.private_ip}:8082 \
+      --quote-service-url http://${aws_instance.quotes.private_ip}:8082 \ # this makes internal service more complicated, consider to use 80 instead and build ALB covering all and listener, ALB will be used for HTTP to HTTPS
       --newsfeed-service-url http://${aws_instance.newsfeed.private_ip}:8081 \
       --static-url http://${aws_s3_bucket.news.website_endpoint}
 EOF

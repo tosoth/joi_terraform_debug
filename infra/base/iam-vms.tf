@@ -16,7 +16,7 @@ resource "aws_iam_role" "news_host" {
 
 #resource "aws_iam_role_policy_attachment" "ecr_read_attach" {
 #  role       = "${aws_iam_role.news_host.name}"
-#  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+#  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"  # !!! this is too wild
 #}
 # changed code start here
 # 1. Define a custom IAM policy document for ECR read-only access

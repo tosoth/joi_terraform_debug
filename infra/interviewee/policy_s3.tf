@@ -1,3 +1,5 @@
+# THIS IS USED BY USER.TF, THE ALLOWED ACTIONS ARE TOO WIDE, COMMENT OUT SOME
+
 module "s3_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
 
@@ -11,13 +13,13 @@ module "s3_policy" {
       {
           "Effect": "Allow",
           "Action": [
-              "s3:CreateBucket",
-              "s3:DeleteBucket",
-              "s3:DeleteBucketOwnershipControls",
-              "s3:DeleteBucketPolicy",
+              #"s3:CreateBucket",
+              #"s3:DeleteBucket",
+              #"s3:DeleteBucketOwnershipControls",
+              #"s3:DeleteBucketPolicy",
               "s3:DeleteObject",
-              "s3:DeleteObjectVersion",
-              "s3:GetAccelerateConfiguration",
+              #"s3:DeleteObjectVersion",
+              #"s3:GetAccelerateConfiguration",
               "s3:GetBucketAcl",
               "s3:GetBucketCORS",
               "s3:GetBucketLocation",
@@ -36,14 +38,14 @@ module "s3_policy" {
               "s3:GetReplicationConfiguration",
               "s3:ListBucket",
               "s3:ListBucketVersions",
-              "s3:PutBucketAcl",
-              "s3:PutBucketOwnershipControls",
-              "s3:PutBucketPolicy",
-              "s3:PutBucketPublicAccessBlock",
-              "s3:PutBucketTagging",
-              "s3:PutBucketVersioning",
-              "s3:PutBucketWebsite",
-              "s3:PutLifecycleConfiguration",
+              #"s3:PutBucketAcl",
+              #"s3:PutBucketOwnershipControls",
+              #"s3:PutBucketPolicy",
+              #"s3:PutBucketPublicAccessBlock",
+              #"s3:PutBucketTagging",
+              #"s3:PutBucketVersioning",
+              #"s3:PutBucketWebsite",
+              #"s3:PutLifecycleConfiguration",
               "s3:PutObject"
           ],
           "Resource": [

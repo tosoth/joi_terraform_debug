@@ -42,7 +42,7 @@ eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
 
 docker pull $DOCKER_IMAGE
 
-NEWSFEED_SECRET_TOKEN="T1&eWbYXNWG1w1^YGKDPxAWJ@^et^&kX"
+NEWSFEED_SECRET_TOKEN="T1&eWbYXNWG1w1^YGKDPxAWJ@^et^&kX" #hardcode password, inject token from secret manager, or parameter store
 
 docker run -d \
   --restart always \

@@ -31,7 +31,7 @@ resource "aws_s3_bucket_acl" "news" {
   ]
 
   bucket = aws_s3_bucket.news.id
-  acl    = "public-read"
+  acl    = "public-read" # this is legacy, use cloudfront instead, and set s3 bucket to priv that force all thru cloudfront
 }
 
 

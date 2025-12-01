@@ -18,7 +18,7 @@ module "ecr_policy" {
               "ecr:DeleteRepository",
               "ecr:DescribeImages",
               "ecr:DescribeRepositories",
-              "ecr:DescribeRepositories",
+              #"ecr:DescribeRepositories",
               "ecr:GetDownloadUrlForLayer",
               "ecr:GetRepositoryPolicy",
               "ecr:InitiateLayerUpload",
@@ -31,6 +31,9 @@ module "ecr_policy" {
               "arn:aws:ecr:*:${data.aws_caller_identity.current.account_id}:repository/${var.interviewee_code}-quotes",
               "arn:aws:ecr:*:${data.aws_caller_identity.current.account_id}:repository/${var.interviewee_code}-newsfeed",
               "arn:aws:ecr:*:${data.aws_caller_identity.current.account_id}:repository/${var.interviewee_code}-front_end"
+
+              # for future scale may consider wide *
+              "arn:aws:ecr:*:${data.aws_caller_identity.current.account_id}:repository/${var.interviewee_code}-*"
           ]
       },
       {

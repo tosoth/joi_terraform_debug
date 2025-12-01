@@ -11,6 +11,7 @@ module "manual_policy" {
       {
           "Effect": "Allow",
           "Action": [
+            # NOTHING CRITICAL IN MY VIEW
             "ec2:Describe*"
           ],
           "Resource": [ "*" ]

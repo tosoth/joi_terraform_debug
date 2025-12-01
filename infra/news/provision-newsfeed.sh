@@ -12,7 +12,8 @@ echo "Provisioning docker image $DOCKER_IMAGE"
 docker stop newsfeed || true
 docker rm newsfeed || true
 
-eval $(aws ecr get-login --region eu-west-1 --no-include-email)
+#eval $(aws ecr get-login --region eu-west-1 --no-include-email)
+eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
 
 docker pull $DOCKER_IMAGE
 

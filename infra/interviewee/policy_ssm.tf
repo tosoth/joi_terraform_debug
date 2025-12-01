@@ -20,8 +20,11 @@ module "ssm_policy" {
           "Resource": [
               "arn:aws:ssm:*:${data.aws_caller_identity.current.account_id}:parameter/${var.interviewee_code}/base/ecr",
               "arn:aws:ssm:*:${data.aws_caller_identity.current.account_id}:parameter/${var.interviewee_code}/base/vpc_id",
-              "arn:aws:ssm:*:${data.aws_caller_identity.current.account_id}:parameter/${var.interviewee_code}/base/subnet/a/id",
-              "arn:aws:ssm:*:${data.aws_caller_identity.current.account_id}:parameter/${var.interviewee_code}/base/subnet/b/id"
+
+              # I will use a wildcard (*) to cover all subnets under the base path, future-proofing the policy for scaling.
+              "arn:aws:ssm:*:${data.aws_caller_identity.current.account_id}:parameter/${var.interviewee_code}/base/subnet/*",
+              #"arn:aws:ssm:*:${data.aws_caller_identity.current.account_id}:parameter/${var.interviewee_code}/base/subnet/a/id",
+              #"arn:aws:ssm:*:${data.aws_caller_identity.current.account_id}:parameter/${var.interviewee_code}/base/subnet/b/id"
           ]
       }
   ]
